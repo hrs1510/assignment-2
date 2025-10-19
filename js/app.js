@@ -14,7 +14,10 @@ function firstFive(posts) {
 //Print all posts that contain a same userID
 function groupPostsByUserId(posts) {
   const userId = 3; // here we are filtering posts for userId 3
-  const filteredPosts = posts.filter(post => post.userId === userId).map(post => ({ userId: post.userId, body: post.body })); // first we filtered posts by userId, this gives us an array of posts with userId 3, then we mapped over that array to create a new array of objects containing only userId and body properties.
+  const filteredPosts = posts.filter(post => post.userId === userId).map(post => ({
+    userId: post.userId,
+    body: post.body
+  })); // first we filtered posts by userId, this gives us an array of posts with userId 3, then we mapped over that array to create a new array of objects containing only userId and body properties.
   console.log(filteredPosts);
 }
 
@@ -29,13 +32,26 @@ function countPostsByUserId(posts) {
   }, {});
   return console.log(groupedPosts);
 }
-
+//Stretch goals (VG)
+//Group by userId
+function groupById(posts,userId) {
+  const grouped = posts.reduce((result, post) => {
+    const groupKey = post[userId]; // get the value of the specified userId property to group by
+    if (!result[groupKey]) { //
+      result[groupKey] = [];
+    }
+    result[groupKey].push(post); // add the post to the appropriate group by userId
+    return result;
+  }, {});
+  console.log(grouped);
+}
 //executing all functions
 async function main() {
   const posts = await fetchPosts();
   firstFive(posts);
   groupPostsByUserId(posts);
   countPostsByUserId(posts);
+  groupById(posts, 'userId');
 
 }
 
