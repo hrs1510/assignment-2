@@ -1,9 +1,9 @@
-async function fetchPosts() {
-  // Fetch data from jsonPlaceHolder
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-  const data = await response.json(); // parsing the response to json format
-  return data;
-}
+// async function fetchPosts() {
+//   // Fetch data from jsonPlaceHolder
+//   const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+//   const data = await response.json(); // parsing the response to json format
+//   return data;
+// }
 
 // Print the first 5 post titles in alphabetical order
 // function firstFive(posts) {
@@ -48,24 +48,48 @@ async function fetchPosts() {
 // }
 
 //Select and Reshape data
-function selectAndReshape(posts) {
-  const reShapedPosts = posts.map(post => ({
-    userId: post.userId,
-    postId: post.id,
-    title: post.title.toUpperCase(), // converting title to uppercase
-  }))
-  return console.log(reShapedPosts);
+// function selectAndReshape(posts) {
+//   const reShapedPosts = posts.map(post => ({
+//     userId: post.userId,
+//     postId: post.id,
+//     title: post.title.toUpperCase(), // converting title to uppercase
+//   }))
+//   return console.log(reShapedPosts);
+// }
+
+//Frequency map
+async function fetchData() {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const data = await response.json();
+  const meals = data.meals;  // this shows array of meal objects
+  // console.log(meals);
+  const freqMap = {}; // empty object to store ingredients and their frequencies as key value pairs
+
+  meals.forEach(meal => {
+    for (let i = 1; i <= meals.length; i++) {
+      const ingredient = meal[`strIngredient${i}`]; // it takes each ingredient property dynamically
+      if (ingredient && ingredient.trim()) {
+        freqMap[ingredient] = (freqMap[ingredient] || 0) + 1; // increment count if ingredient already exists, else initialize to 1
+      }
+    }
+  });
+
+console.log(freqMap);
 }
 
-//executing all functions
-async function main() {
-  const posts = await fetchPosts();
-  // firstFive(posts);
-  // groupPostsByUserId(posts);
-  // countPostsByUserId(posts);
-  // groupById(posts, 'userId');
-  selectAndReshape(posts);
+fetchData(); // calling the function to execute
 
-}
 
-main();
+
+// //executing all functions
+// async function main() {
+//   const posts = await fetchPosts();
+//   // firstFive(posts);
+//   // groupPostsByUserId(posts);
+//   // countPostsByUserId(posts);
+//   // groupById(posts, 'userId');
+//   // selectAndReshape(posts);
+//
+// }
+//
+// main();
